@@ -73,5 +73,5 @@ app.get('*', function(req, res){
 
 // app.listen("192.168.43.225" || 3000);
 // console.log('Web Server is listening at port '+ ("192.168.43.225" || 3000));
-app.listen(process.env.port || 3000);
+app.listen(process.env.PORT || 3000);
 console.log('Web Server is listening at port '+ (process.env.port || 3000));

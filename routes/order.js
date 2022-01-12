@@ -39,7 +39,7 @@ const createTransporter = async () => {
     "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",
     "https://developers.google.com/oauthplayground"
   );
-
+  
 // 2
   oauth2Client.setCredentials({
     refresh_token: "1//047D_ZJW3IOZJCgYIARAAGAQSNwF-L9IrTOrLQ9JKlwAvUC8LsD7S00PUqhPUDBUI9Nnri3aUGvn3Rswwne2cHvBTTq7jmGJz6Mc",
@@ -65,7 +65,7 @@ const createTransporter = async () => {
       "954681232618-04nc2kq8qtku7ciqkj8gemg7fk858u5o.apps.googleusercontent.com",
       clientSecret: "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",
       refreshToken:
-      "1//047D_ZJW3IOZJCgYIARAAGAQSNwF-L9IrTOrLQ9JKlwAvUC8LsD7S00PUqhPUDBUI9Nnri3aUGvn3Rswwne2cHvBTTq7jmGJz6Mc",
+      "1//0492PqS3Cz86jCgYIARAAGAQSNwF-L9Ir2dj1hWbqYLhMDYUDv_o7uMKpYYOqQrSuBorD1NCPLJddIwpBoXpMdALo_SSTBR9PXZA",
     },
   });
 

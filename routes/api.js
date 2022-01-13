@@ -100,6 +100,14 @@ router.post("/signup", function (req, res, next) {
     .catch(next);
 });
 
+
+//get get delivery amount
+router.get("/getamount", function (req, res, next) {
+  res.send({message: 400});
+});
+
+
+
 //get all users
 router.get("/users", checkAuth, function (req, res, next) {
   User.find({}).then(function (users) {

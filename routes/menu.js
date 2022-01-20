@@ -171,10 +171,10 @@ router.delete("/menu/:id", function (req, res, next) {
 
 //search to get all vendors and menus
 router.get("/search", function (req, res, next){
-  Vendor.find({name:{$regex : req.query.search}})
+  Vendor.find({name:{$regex: req.query.search, $options:'i'}})
   .then(function (vendor) {
     // res.send(vendor);
-    Menu.find({title: {$regex :req.query.search}})
+    Menu.find({title:{$regex: req.query.search, $options:'i'}})
   .then(function (menu) {
   let filterVendor =   vendor.map(function(v){
     return {...v._doc, status: "vendor"}

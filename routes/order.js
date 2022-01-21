@@ -894,6 +894,7 @@ a[x-apple-data-detectors='true'] {
                             function (venue) {}
                           );
                         });
+                        console.log('sucessssssss')
                         res.send({
                           message: "sucessfully ordered",
                           status: true,

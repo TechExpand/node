@@ -138,7 +138,7 @@ router.post("/order/:reference", (req, res, next) => {
     <tr>
       <td class="v-text-align" style="padding-right: 0px;padding-left: 0px;" align="center">
         
-        <img align="center" border="0" src="${value.menu.category.image}" alt="Image" title="Image" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: inline-block !important;border: none;height: auto;float: none;width: 100%;max-width: 186px;" width="186"/>
+        <img align="center" border="0" src="${value.menu.image}" alt="Image" title="Image" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: inline-block !important;border: none;height: auto;float: none;width: 100%;max-width: 186px;" width="186"/>
         
       </td>
     </tr>

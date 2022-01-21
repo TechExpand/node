@@ -4,6 +4,7 @@ const Slide = require("../models/slide");
 let multer = require("multer");
 const fs = require("fs");
 const AWS = require("aws-sdk");
+var nodemailer = require('nodemailer');
 
 
 const ID = "AKIATM4GCCB2BOMJGDR3";
@@ -119,5 +120,10 @@ router.delete("/slide/:id", function (req, res, next) {
     })
     .catch(next);
 });
+
+
+
+
+
 
 module.exports = router;

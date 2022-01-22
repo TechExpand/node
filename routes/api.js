@@ -222,7 +222,7 @@ router.post("/cart", function (req, res, next) {
         } else {
           Profile.findOne({user: req.body.user}).then(function(profile){
           let coreectVendorCount =  vendorCount.length-1;
-            Profile.findByIdAndUpdate({ _id: profile._id }, {...profile, deliveryfee: coreectVendorCount*400}).then(function (props) {
+            Profile.findByIdAndUpdate({ _id: profile._id }, {...profile, deliveryfee: 400}).then(function (props) {
               Cart.create(req.body)
               .then(function (cart) {
                 res.send(props);

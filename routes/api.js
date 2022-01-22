@@ -197,7 +197,14 @@ router.post("/cart", function (req, res, next) {
         Profile.findOne({ user: req.body.user }).then(function (profile) {
           Profile.findByIdAndUpdate(
             { _id: profile._id },
-            { ...profile, deliveryfee: 0 }
+            { 
+              _id: profile._id,
+              user: profile.user,
+              name: profile.name,
+              email: profile.email,
+              __v: profile.__v,
+              deliveryfee: 0 ,
+             }
           ).then(function (props) {
             Cart.create(req.body)
               .then(function (cart) {
@@ -216,7 +223,13 @@ router.post("/cart", function (req, res, next) {
           Profile.findOne({ user: req.body.user }).then(function (profile) {
             Profile.findByIdAndUpdate(
               { _id: profile._id },
-              { ...profile, deliveryfee: 0 }
+              { 
+                _id: profile._id,
+                user: profile.user,
+                name: profile.name,
+                email: profile.email,
+                __v: profile.__v,
+                deliveryfee: 0 }
             ).then(function (props) {
               Cart.create(req.body)
                 .then(function (cart) {
@@ -230,7 +243,13 @@ router.post("/cart", function (req, res, next) {
             let coreectVendorCount = vendorCount.length - 1;
             Profile.findByIdAndUpdate(
               { _id: profile._id },
-              { ...profile, deliveryfee: coreectVendorCount * 400 }
+              { 
+                _id: profile._id,
+                user: profile.user,
+                name: profile.name,
+                email: profile.email,
+                __v: profile.__v,
+                deliveryfee: coreectVendorCount * 400 }
             ).then(function (props) {
               Cart.create(req.body)
                 .then(function (cart) {
@@ -256,7 +275,14 @@ router.delete("/cart/:id", function (req, res, next) {
         Profile.findOne({ user:  req.user }).then(function (profile) {
           Profile.findByIdAndUpdate(
             { _id: profile._id },
-            { ...profile, deliveryfee: 0 }
+            { 
+              _id: profile._id,
+              user: profile.user,
+              name: profile.name,
+              email: profile.email,
+              __v: profile.__v,
+              deliveryfee: 0 ,
+            }
           ).then(function (props) {
             res.send({ deliveryfee: 0 });
           });
@@ -271,7 +297,14 @@ router.delete("/cart/:id", function (req, res, next) {
           Profile.findOne({ user: req.user }).then(function (profile) {
             Profile.findByIdAndUpdate(
               { _id: profile._id },
-              { ...profile, deliveryfee: 0 }
+              { 
+                _id: profile._id,
+                user: profile.user,
+                name: profile.name,
+                email: profile.email,
+                __v: profile.__v,
+                deliveryfee: 0 ,
+              }
             ).then(function (props) {
               res.send({ deliveryfee: 0 });
             });
@@ -281,7 +314,13 @@ router.delete("/cart/:id", function (req, res, next) {
             let coreectVendorCount = vendorCount.length - 1;
             Profile.findByIdAndUpdate(
               { _id: profile._id },
-              { ...profile, deliveryfee: coreectVendorCount * 400 }
+              { 
+                _id: profile._id,
+                user: profile.user,
+                name: profile.name,
+                email: profile.email,
+                __v: profile.__v,
+                deliveryfee: coreectVendorCount * 400 }
             ).then(function (props) {
               let newdelivery = coreectVendorCount * 400;
               res.send({ deliveryfee: newdelivery });

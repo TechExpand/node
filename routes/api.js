@@ -249,7 +249,48 @@ router.post("/cart", function (req, res, next) {
 router.delete("/cart/:id", function (req, res, next) {
   Cart.findByIdAndDelete({ _id: req.params.id })
     .then(function (student) {
-      res.send(student);
+      Cart.find({ user: req.user })
+    .populate("menu")
+    .then(function (value) {
+      if (value.length <= 0) {
+        Profile.findOne({ user:  req.user }).then(function (profile) {
+          Profile.findByIdAndUpdate(
+            { _id: profile._id },
+            { ...profile, deliveryfee: 0 }
+          ).then(function (props) {
+            res.send({ deliveryfee: 0 });
+          });
+        });
+      } else {
+        let newCartList = [];
+        value.map((e) => {
+          newCartList.push(JSON.stringify(e.menu.vendor));
+        });
+        let vendorCount = [...new Set(newCartList)];
+        if (vendorCount.length <= 1) {
+          Profile.findOne({ user: req.user }).then(function (profile) {
+            Profile.findByIdAndUpdate(
+              { _id: profile._id },
+              { ...profile, deliveryfee: 0 }
+            ).then(function (props) {
+              res.send({ deliveryfee: 0 });
+            });
+          });
+        } else {
+          Profile.findOne({ user: req.body.user }).then(function (profile) {
+            let coreectVendorCount = vendorCount.length - 1;
+            Profile.findByIdAndUpdate(
+              { _id: profile._id },
+              { ...profile, deliveryfee: coreectVendorCount * 400 }
+            ).then(function (props) {
+              let newdelivery = coreectVendorCount * 400;
+              res.send({ deliveryfee: newdelivery });
+            });
+          });
+        }
+      }
+    });
+      // res.send(student);
     })
     .catch(next);
 });

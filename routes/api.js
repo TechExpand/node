@@ -286,7 +286,7 @@ router.delete("/cart/:id", function (req, res, next) {
               deliveryfee: 0 ,
             }
           ).then(function (props) {
-            res.send({ deliveryfee: 0 });
+            res.send({ deliveryfee: 0 , vendor: req.body.vendor});
           });
         });
       } else {
@@ -309,7 +309,7 @@ router.delete("/cart/:id", function (req, res, next) {
                 deliveryfee: 0 ,
               }
             ).then(function (props) {
-              res.send({ deliveryfee: 0 });
+              res.send({ deliveryfee: 0 , vendor:req.body.vendor});
             });
           });
         } else {
@@ -326,7 +326,7 @@ router.delete("/cart/:id", function (req, res, next) {
                 deliveryfee: coreectVendorCount * 400 }
             ).then(function (props) {
               let newdelivery = coreectVendorCount * 400;
-              res.send({ deliveryfee: newdelivery });
+              res.send({ deliveryfee: newdelivery, vendor:req.body.vendor });
             });
           });
         }

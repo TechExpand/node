@@ -117,8 +117,8 @@ router.get("/users", checkAuth, function (req, res, next) {
 });
 
 //get profile of a particular user
-router.post("/profile/", function (req, res, next) {
-  Profile.findOne({ user: req.body.user }).then(function (profile) {
+router.post("/profile/:id", function (req, res, next) {
+  Profile.findOne({user: req.params.id}).then(function (profile) {
     res.send(profile);
   });
 });

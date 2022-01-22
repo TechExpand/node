@@ -171,15 +171,16 @@ router.post("/vendor-verify", function (req, res, next) {
   Cart.find({ user: req.body.user })
     .populate("menu")
     .then(function (value) {
-      if (value.length <= 0) {
+      if (value.length == 0) {
         res.send({ message: false });
       } else {
         let newCartList = [];
         value.map((e) => {
           newCartList.push(JSON.stringify(e.menu.vendor));
         });
-        let vendorCount = [...new Set(newCartList)];
-        if (vendorCount.length <= 1) {
+        combinedNewCartList = [...newCartList, JSON.stringify(req.body.vendor)] 
+        let vendorCount = [...new Set(combinedNewCartList)];
+        if (vendorCount.length == 1) {
           res.send({ message: false });
         } else {
           res.send({ message: true });
@@ -218,7 +219,8 @@ router.post("/cart", function (req, res, next) {
         value.map((e) => {
           newCartList.push(JSON.stringify(e.menu.vendor));
         });
-        let vendorCount = [...new Set(newCartList)];
+        combinedNewCartList = [...newCartList, JSON.stringify(req.body.vendor)] 
+        let vendorCount = [...new Set(combinedNewCartList)];
         if (vendorCount.length === 1) {
           Profile.findOne({ user: req.body.user }).then(function (profile) {
             Profile.findByIdAndUpdate(
@@ -292,7 +294,8 @@ router.delete("/cart/:id", function (req, res, next) {
         value.map((e) => {
           newCartList.push(JSON.stringify(e.menu.vendor));
         });
-        let vendorCount = [...new Set(newCartList)];
+        combinedNewCartList = [...newCartList, JSON.stringify(req.body.vendor)] 
+        let vendorCount = [...new Set(combinedNewCartList)];
         if (vendorCount.length <= 1) {
           Profile.findOne({ user: req.user }).then(function (profile) {
             Profile.findByIdAndUpdate(

@@ -193,7 +193,7 @@ router.post("/cart", function (req, res, next) {
   Cart.find({ user: req.body.user })
     .populate("menu")
     .then(function (value) {
-      if (value.length <= 0) {
+      if (value.length === 0) {
         Profile.findOne({ user: req.body.user }).then(function (profile) {
           Profile.findByIdAndUpdate(
             { _id: profile._id },
@@ -219,7 +219,7 @@ router.post("/cart", function (req, res, next) {
           newCartList.push(JSON.stringify(e.menu.vendor));
         });
         let vendorCount = [...new Set(newCartList)];
-        if (vendorCount.length <= 1) {
+        if (vendorCount.length === 1) {
           Profile.findOne({ user: req.body.user }).then(function (profile) {
             Profile.findByIdAndUpdate(
               { _id: profile._id },

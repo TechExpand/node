@@ -148,6 +148,7 @@ router.post("/order/:reference", (req, res, next) => {
                             <p style="font-size: 14px; line-height: 140%;">CATEGORY: ${value.menu.category.title}</p>
                             <p style="font-size: 14px; line-height: 140%;">VENDOR: ${value.menu.vendor.name}</p>
                             <p style="font-size: 14px; line-height: 140%;">MENU TITLE: ${value.menu.title}</p>
+                            <p style="font-size: 14px; line-height: 140%;">MENU PRICE: ${value.menu.price}</p>
                             <p style="font-size: 14px; line-height: 140%;">MENU DESCRIPTION: ${value.menu.description}</p>
                           </div>`;
                       newValue.push(template);
@@ -647,7 +648,7 @@ a[x-apple-data-detectors='true'] {
         <td style="overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:'Lato',sans-serif;" align="left">
           
     <div class="v-text-align" style="color: #242424; line-height: 140%; text-align: left; word-wrap: break-word;">
-      <p style="font-size: 14px; line-height: 140%;"><span style="font-size: 18px; line-height: 25.2px;"><strong><span style="line-height: 25.2px; font-size: 18px;">Who can ? You can!</span></strong></span></p>
+      <p style="font-size: 14px; line-height: 140%;"><span style="font-size: 18px; line-height: 25.2px;"><strong><span style="line-height: 25.2px; font-size: 18px;">Recieved? Menu!</span></strong></span></p>
     </div>
   
         </td>
@@ -672,6 +673,9 @@ a[x-apple-data-detectors='true'] {
       }</p>
       <p style="font-size: 14px; line-height: 140%;">DELIVERY LOCATION: ${
         req.body.deliverylocation
+      }</p>
+      <p style="font-size: 14px; line-height: 140%;">USER PHONE NUMBER: ${
+        req.body.phone
       }</p>
     </div>
   

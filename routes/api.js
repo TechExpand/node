@@ -10,6 +10,7 @@ const saltRounds = 10;
 const checkAuth = require("../middleware/validate");
 const nodemailer = require("nodemailer");
 const { google } = require("googleapis");
+const { json } = require("body-parser");
 const TOKEN_SECRET = "222hwhdhnnjduru838272@@$henncndbdhsjj333n33brnfn";
 
 const validateEmail = (email) => {
@@ -79,6 +80,7 @@ router.post("/signup", function (req, res, next) {
                 email: email,
                 name: fullname,
                 user: createduser._id,
+                deliveryfee: 0,
               })
                 .then(function (vendor) {
                   let token = jwt.sign({ id: createduser._id }, TOKEN_SECRET, {
@@ -100,13 +102,10 @@ router.post("/signup", function (req, res, next) {
     .catch(next);
 });
 
-
 //get get delivery amount
 router.get("/getamount", function (req, res, next) {
-  res.send({message: 400});
+  res.send({ message: 400 });
 });
-
-
 
 //get all users
 router.get("/users", checkAuth, function (req, res, next) {
@@ -165,13 +164,75 @@ router.get("/cart/", checkAuth, function (req, res, next) {
     });
 });
 
+
+//verify user cart for multiple vendor order
+router.post("/vendor-verify", function (req, res, next) {
+  Cart.find({ user: req.body.user })
+  .populate("menu")
+  .then(function (value) {
+    if (value.length <= 0) {
+      res.send({message: false});
+    } else {
+      let newCartList = [];
+      value.map((e) => {
+        newCartList.push(JSON.stringify(e.menu.vendor));
+      });
+      let vendorCount = [...new Set(newCartList)];
+      if (vendorCount.length <= 1) {
+        res.send({message: false});
+      } else {
+        res.send({message: true});
+      }
+    }
+  });
+});
+
+
 //create cart for a user
 router.post("/cart", function (req, res, next) {
-  Cart.create(req.body)
-    .then(function (cart) {
-      res.send(cart);
-    })
-    .catch(next);
+  Cart.find({ user: req.body.user })
+    .populate("menu")
+    .then(function (value) {
+      if (value.length <= 0) {
+        Profile.findOne({user: req.body.user}).then(function(profile){
+          Profile.findByIdAndUpdate({ _id: profile._id }, {...profile, deliveryfee: 0}).then(function (props) {
+            Cart.create(req.body)
+            .then(function (cart) {
+              res.send(props);
+            })
+            .catch(next);
+      });
+        })
+      } else {
+        let newCartList = [];
+        value.map((e) => {
+          newCartList.push(JSON.stringify(e.menu.vendor));
+        });
+        let vendorCount = [...new Set(newCartList)];
+        if (vendorCount.length <= 1) {
+          Profile.findOne({user: req.body.user}).then(function(profile){
+              Profile.findByIdAndUpdate({ _id: profile._id }, {...profile, deliveryfee: 0}).then(function (props) {
+                Cart.create(req.body)
+                .then(function (cart) {
+                  res.send(props);
+                })
+                .catch(next);
+          });
+            })
+        } else {
+          Profile.findOne({user: req.body.user}).then(function(profile){
+          let coreectVendorCount =  vendorCount.length-1;
+            Profile.findByIdAndUpdate({ _id: profile._id }, {...profile, deliveryfee: coreectVendorCount*400}).then(function (props) {
+              Cart.create(req.body)
+              .then(function (cart) {
+                res.send(props);
+              })
+              .catch(next);
+        });
+          })
+        }
+      }
+    });
 });
 
 //delete user cart
@@ -272,8 +333,7 @@ router.post("/reset", async (req, res, next) => {
                   from: "fybelogistics@gmail.com",
                   to: req.query.email,
                   subject: "FYBE RESET PASSWORD",
-                  html: 
-                  `
+                  html: `
                   <!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
                 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
                 <head>
@@ -786,7 +846,7 @@ router.post("/reset", async (req, res, next) => {
                 </body>
                 
                 </html>
-                  `
+                  `,
                 };
 
                 let emailTransporter = await createTransporter();
@@ -801,8 +861,6 @@ router.post("/reset", async (req, res, next) => {
                     });
                   }
                 });
-
-          
               });
             });
           })

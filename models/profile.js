@@ -7,7 +7,9 @@ const ProfileSchema = new Schema({
     user: { type: Schema.Types.ObjectId, ref: 'user' },
     name: String,
     email: String,
+    deliveryfee: String,
     image: String,
+    dateofbirth: String,
     dateofbirth: String,
   });
   

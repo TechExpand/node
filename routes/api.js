@@ -270,14 +270,44 @@ router.post("/cart", function (req, res, next) {
 router.delete("/cart/:id", function (req, res, next) {
   Cart.findByIdAndDelete({ _id: req.params.id })
     .then(function (student) {
+        res.send(student)
+    })
+    .catch(next);
+});
 
-    
-    
-      Cart.find({ user: req.body.user })
-      .populate("menu")
-      .then(function (value) {
-        if (value.length === 0) {
-          Profile.findOne({ user: req.body.user }).then(function (profile){
+
+
+
+//deleteCheck for a user
+router.post("/deleteCheck", function (req, res, next) {
+  Cart.find({ user: req.body.user })
+    .populate("menu")
+    .then(function (value) {
+      if (value.length === 0) {
+        Profile.findOne({ user: req.body.user }).then(function (profile) {
+          Profile.findByIdAndUpdate(
+            { _id: profile._id },
+            { 
+              _id: profile._id,
+              user: profile.user,
+              name: profile.name,
+              email: profile.email,
+              __v: profile.__v,
+              deliveryfee: 0 ,
+             }
+          ).then(function (props) {
+            res.send({ deliveryfee: 0, value: "1",  vendor:req.body.vendor_id });
+          });
+        });
+      } else {
+        let newCartList = [];
+        value.map((e) => {
+          newCartList.push(JSON.stringify(e.menu.vendor));
+        });
+        combinedNewCartList = [...newCartList, JSON.stringify(req.body.vendor_id)] 
+        let vendorCount = [...new Set(combinedNewCartList)];
+        if (vendorCount.length === 1) {
+          Profile.findOne({ user: req.body.user }).then(function (profile) {
             Profile.findByIdAndUpdate(
               { _id: profile._id },
               { 
@@ -286,60 +316,35 @@ router.delete("/cart/:id", function (req, res, next) {
                 name: profile.name,
                 email: profile.email,
                 __v: profile.__v,
-                deliveryfee: 0 ,
-               }
+                deliveryfee: 0 }
             ).then(function (props) {
-              res.send({ deliveryfee: 0, value: "1" });
+              res.send({ deliveryfee: 0 , value: "2", vendor:req.body.vendor_id });
             });
           });
         } else {
-          let newCartList = [];
-          value.map((e) => {
-            newCartList.push(JSON.stringify(e.menu.vendor));
+          Profile.findOne({ user: req.body.user }).then(function (profile) {
+            let coreectVendorCount = vendorCount.length - 1;
+            Profile.findByIdAndUpdate(
+              { _id: profile._id },
+              { 
+                _id: profile._id,
+                user: profile.user,
+                name: profile.name,
+                email: profile.email,
+                __v: profile.__v,
+                deliveryfee: coreectVendorCount * 400 }
+            ).then(function (props) {
+              let newdelivery = coreectVendorCount * 400;
+                  res.send({ deliveryfee: newdelivery, value: "3" , vendor:req.body.vendor_id });
+            });
           });
-          combinedNewCartList = [...newCartList, JSON.stringify(req.body.vendor._id)] 
-          let vendorCount = [...new Set(combinedNewCartList)];
-          if (vendorCount.length === 1) {
-            Profile.findOne({ user: req.body.user }).then(function (profile) {
-              Profile.findByIdAndUpdate(
-                { _id: profile._id },
-                { 
-                  _id: profile._id,
-                  user: profile.user,
-                  name: profile.name,
-                  email: profile.email,
-                  __v: profile.__v,
-                  deliveryfee: 0 }
-              ).then(function (props) {
-                res.send({ deliveryfee: 0 , value: "2" });
-              });
-            });
-          } else {
-            Profile.findOne({ user: req.body.user }).then(function (profile) {
-              let coreectVendorCount = vendorCount.length - 1;
-              Profile.findByIdAndUpdate(
-                { _id: profile._id },
-                { 
-                  _id: profile._id,
-                  user: profile.user,
-                  name: profile.name,
-                  email: profile.email,
-                  __v: profile.__v,
-                  deliveryfee: coreectVendorCount * 400 }
-              ).then(function (props) {
-                let newdelivery = coreectVendorCount * 400;
-                res.send({ deliveryfee: newdelivery, value: "3"  });
-              });
-            });
-          }
         }
-      });
-
-
-      
-    })
-    .catch(next);
+      }
+    });
 });
+
+
+
 
 //create profile of a user
 router.post("/profile", function (req, res, next) {

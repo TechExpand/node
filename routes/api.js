@@ -45,6 +45,7 @@ router.post("/login", function (req, res, next) {
             token: token,
             email: user.email,
             fullname: profile[0].name,
+            deliveryfee: profile[0].deliveryfee,
           });
         });
       });
@@ -82,7 +83,7 @@ router.post("/signup", function (req, res, next) {
                 user: createduser._id,
                 deliveryfee: 0,
               })
-                .then(function (vendor) {
+                .then(function (profile) {
                   let token = jwt.sign({ id: createduser._id }, TOKEN_SECRET, {
                     expiresIn: "3600000000s",
                   });
@@ -91,6 +92,7 @@ router.post("/signup", function (req, res, next) {
                     token: token,
                     fullname: fullname,
                     email: createduser._doc.email,
+                    deliveryfee: 0,
                   });
                 })
                 .catch(next);

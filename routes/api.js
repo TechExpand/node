@@ -208,7 +208,7 @@ router.post("/cart", function (req, res, next) {
           ).then(function (props) {
             Cart.create(req.body)
               .then(function (cart) {
-                res.send({ deliveryfee: 0 });
+                res.send({ deliveryfee: 0, value: "1" });
               })
               .catch(next);
           });
@@ -233,7 +233,7 @@ router.post("/cart", function (req, res, next) {
             ).then(function (props) {
               Cart.create(req.body)
                 .then(function (cart) {
-                  res.send({ deliveryfee: 0 });
+                  res.send({ deliveryfee: 0 , value: "2" });
                 })
                 .catch(next);
             });
@@ -254,7 +254,7 @@ router.post("/cart", function (req, res, next) {
               Cart.create(req.body)
                 .then(function (cart) {
                   let newdelivery = coreectVendorCount * 400;
-                  res.send({ deliveryfee: newdelivery });
+                  res.send({ deliveryfee: newdelivery, value: "3"  });
                 })
                 .catch(next);
             });

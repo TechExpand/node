@@ -270,7 +270,7 @@ router.post("/cart", function (req, res, next) {
 router.delete("/cart/:id/:user", function (req, res, next) {
   Cart.findByIdAndDelete({ _id: req.params.id })
     .then(function (student) {
-        Cart.find({user: req.params.user}).then(function(carts){
+        Cart.find({user: req.params.user}).populate('menu').then(function(carts){
           if(carts.length == 0){
             Profile.findOneAndUpdate({user: req.params.user},
               {deliveryfee: 0 },
@@ -294,7 +294,7 @@ router.delete("/cart/:id/:user", function (req, res, next) {
             if (err) {
                 console.log("Something wrong when updating data!");
             }
-           res.send({message:doc, result:2, vendorCount:vendorCount.length, carts:carts})
+           res.send({message:doc, result:2, vendorCount:vendorCount.length, vendor:vendorCount})
         });
         }else{
           let coreectVendorCount = vendorCount.length - 1;
@@ -304,7 +304,7 @@ router.delete("/cart/:id/:user", function (req, res, next) {
             if (err) {
                 console.log("Something wrong when updating data!");
             }
-           res.send({message:doc, result:3})
+           res.send({message:doc, result:3, vendorCount:vendorCount.length, vendor:vendorCount})
         });
         }
           }

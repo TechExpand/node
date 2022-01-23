@@ -271,7 +271,44 @@ router.delete("/cart/:id/:user", function (req, res, next) {
   Cart.findByIdAndDelete({ _id: req.params.id })
     .then(function (student) {
         Cart.find({user: req.params.user}).then(function(carts){
-          res.send(carts)
+          if(carts.length == 0){
+            Profile.findOneAndUpdate({user: req.params.user},
+              {deliveryfee: 0 },
+                {new: true}, (err, doc) => {
+              if (err) {
+                  console.log("Something wrong when updating data!");
+              }
+             res.send(doc)
+          });
+          }else{
+            let newCartList = [];
+            carts.map((e) => {
+          newCartList.push(JSON.stringify(e.menu.vendor));
+        });
+        combinedNewCartList = [...newCartList] 
+        let vendorCount = [...new Set(combinedNewCartList)];
+        if (vendorCount.length == 1) {
+          Profile.findOneAndUpdate({user: req.params.user},
+            {deliveryfee: 0 },
+              {new: true}, (err, doc) => {
+            if (err) {
+                console.log("Something wrong when updating data!");
+            }
+           res.send(doc)
+        });
+        }else{
+          let coreectVendorCount = vendorCount.length - 1;
+          Profile.findOneAndUpdate({user: req.params.user},
+            {deliveryfee: coreectVendorCount * 400},
+              {new: true}, (err, doc) => {
+            if (err) {
+                console.log("Something wrong when updating data!");
+            }
+           res.send(doc)
+        });
+        }
+          }
+        
         })
     })
     .catch(next);
@@ -279,71 +316,6 @@ router.delete("/cart/:id/:user", function (req, res, next) {
 
 
 
-
-//deleteCheck for a user
-router.post("/deleteCheck", function (req, res, next) {
-  Cart.find({ user: req.body.user })
-    .populate("menu")
-    .then(function (value) {
-      if (value.length === 0) {
-        Profile.findOne({ user: req.body.user }).then(function (profile) {
-          Profile.findByIdAndUpdate(
-            { _id: profile._id },
-            { 
-              _id: profile._id,
-              user: profile.user,
-              name: profile.name,
-              email: profile.email,
-              __v: profile.__v,
-              deliveryfee: 0 ,
-             }
-          ).then(function (props) {
-            res.send({ deliveryfee: 0, value: "1",  vendor:req.body.vendor_id });
-          });
-        });
-      } else {
-        let newCartList = [];
-        value.map((e) => {
-          newCartList.push(JSON.stringify(e.menu.vendor));
-        });
-        combinedNewCartList = [...newCartList, JSON.stringify(req.body.vendor_id)] 
-        let vendorCount = [...new Set(combinedNewCartList)];
-        if (vendorCount.length === 1) {
-          Profile.findOne({ user: req.body.user }).then(function (profile) {
-            Profile.findByIdAndUpdate(
-              { _id: profile._id },
-              { 
-                _id: profile._id,
-                user: profile.user,
-                name: profile.name,
-                email: profile.email,
-                __v: profile.__v,
-                deliveryfee: 0 }
-            ).then(function (props) {
-              res.send({ deliveryfee: 0 , value: "2", vendor:req.body.vendor_id });
-            });
-          });
-        } else {
-          Profile.findOne({ user: req.body.user }).then(function (profile) {
-            let coreectVendorCount = vendorCount.length - 1;
-            Profile.findByIdAndUpdate(
-              { _id: profile._id },
-              { 
-                _id: profile._id,
-                user: profile.user,
-                name: profile.name,
-                email: profile.email,
-                __v: profile.__v,
-                deliveryfee: coreectVendorCount * 400 }
-            ).then(function (props) {
-              let newdelivery = coreectVendorCount * 400;
-                  res.send({ deliveryfee: newdelivery, value: "3" , vendor:req.body.vendor_id });
-            });
-          });
-        }
-      }
-    });
-});
 
 
 

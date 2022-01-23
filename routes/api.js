@@ -294,7 +294,7 @@ router.delete("/cart/:id/:user", function (req, res, next) {
             if (err) {
                 console.log("Something wrong when updating data!");
             }
-           res.send({message:doc, result:2, vendorCount:vendorCount.length, vendor:vendorCount})
+           res.send({message:doc, result:2, vendorCount:vendorCount.length, carts:carts})
         });
         }else{
           let coreectVendorCount = vendorCount.length - 1;

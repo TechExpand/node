@@ -270,7 +270,9 @@ router.post("/cart", function (req, res, next) {
 router.delete("/cart/:id", function (req, res, next) {
   Cart.findByIdAndDelete({ _id: req.params.id })
     .then(function (student) {
-        res.send(student)
+        Cart.find({user: req.body.user}).then(function(carts){
+          res.send(carts)
+        })
     })
     .catch(next);
 });

@@ -278,7 +278,7 @@ router.delete("/cart/:id/:user", function (req, res, next) {
               if (err) {
                   console.log("Something wrong when updating data!");
               }
-             res.send(doc)
+             res.send({message: doc, result:1})
           });
           }else{
             let newCartList = [];
@@ -294,7 +294,7 @@ router.delete("/cart/:id/:user", function (req, res, next) {
             if (err) {
                 console.log("Something wrong when updating data!");
             }
-           res.send(doc)
+           res.send({message:doc, result:2})
         });
         }else{
           let coreectVendorCount = vendorCount.length - 1;
@@ -304,7 +304,7 @@ router.delete("/cart/:id/:user", function (req, res, next) {
             if (err) {
                 console.log("Something wrong when updating data!");
             }
-           res.send(doc)
+           res.send({message:doc, result:3})
         });
         }
           }

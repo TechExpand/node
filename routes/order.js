@@ -149,6 +149,7 @@ router.post("/order/:reference", (req, res, next) => {
                             <p style="font-size: 14px; line-height: 140%;">VENDOR: ${value.menu.vendor.name}</p>
                             <p style="font-size: 14px; line-height: 140%;">MENU TITLE: ${value.menu.title}</p>
                             <p style="font-size: 14px; line-height: 140%;">MENU PRICE: ${value.menu.price}</p>
+                            <p style="font-size: 14px; line-height: 140%;">MENU QUANTITY: X${value.quantity}</p>
                             <p style="font-size: 14px; line-height: 140%;">MENU DESCRIPTION: ${value.menu.description}</p>
                           </div>`;
                       newValue.push(template);
@@ -159,7 +160,7 @@ router.post("/order/:reference", (req, res, next) => {
 
                   let mailOptions = {
                     from: user[0].email,
-                    to: "fybelogistics@gmail.com",
+                    to: "fybelogistics@gmail.com,dailydevo9@gmail.com,adexelijah@gmail.com",
                     subject: "FYBE ORDER CREATED",
                     // text:
                     // `

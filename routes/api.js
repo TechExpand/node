@@ -267,10 +267,10 @@ router.post("/cart", function (req, res, next) {
 });
 
 //delete user cart
-router.delete("/cart/:id", function (req, res, next) {
+router.delete("/cart/:id/:user", function (req, res, next) {
   Cart.findByIdAndDelete({ _id: req.params.id })
     .then(function (student) {
-        Cart.find({user: req.body.user}).then(function(carts){
+        Cart.find({user: req.params.user}).then(function(carts){
           res.send(carts)
         })
     })

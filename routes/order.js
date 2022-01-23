@@ -3,7 +3,7 @@ const router = express.Router();
 // const Order = require("../models/order");
 const axios = require("axios");
 const { google } = require("googleapis");
-const SECRET_KEY = "sk_test_b559a7a2cbf5a55636061d915bd36418f41994b7";
+const SECRET_KEY = "sk_live_15fd431fd077d26edd7f9dfb84fb5d89f361b9d9";
 const Order = require("../models/order");
 const nodemailer = require("nodemailer");
 const User = require("../models/user");
@@ -649,7 +649,7 @@ a[x-apple-data-detectors='true'] {
         <td style="overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:'Lato',sans-serif;" align="left">
           
     <div class="v-text-align" style="color: #242424; line-height: 140%; text-align: left; word-wrap: break-word;">
-      <p style="font-size: 14px; line-height: 140%;"><span style="font-size: 18px; line-height: 25.2px;"><strong><span style="line-height: 25.2px; font-size: 18px;">Recieved? Menu!</span></strong></span></p>
+      <p style="font-size: 14px; line-height: 140%;"><span style="font-size: 18px; line-height: 25.2px;"><strong><span style="line-height: 25.2px; font-size: 18px;">Recieved Menu!</span></strong></span></p>
     </div>
   
         </td>

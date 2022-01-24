@@ -106,7 +106,7 @@ router.post("/signup", function (req, res, next) {
 
 //get get delivery amount
 router.get("/getamount", function (req, res, next) {
-  res.send({ message: 400 });
+  res.send({ message: 300 });
 });
 
 //get all users
@@ -251,11 +251,11 @@ router.post("/cart", function (req, res, next) {
                 name: profile.name,
                 email: profile.email,
                 __v: profile.__v,
-                deliveryfee: coreectVendorCount * 400 }
+                deliveryfee: coreectVendorCount * 300 }
             ).then(function (props) {
               Cart.create(req.body)
                 .then(function (cart) {
-                  let newdelivery = coreectVendorCount * 400;
+                  let newdelivery = coreectVendorCount * 300;
                   res.send({ deliveryfee: newdelivery, value: "3"  });
                 })
                 .catch(next);
@@ -299,7 +299,7 @@ router.delete("/cart/:id/:user", function (req, res, next) {
         }else{
           let coreectVendorCount = vendorCount.length - 1;
           Profile.findOneAndUpdate({user: req.params.user},
-            {deliveryfee: coreectVendorCount * 400},
+            {deliveryfee: coreectVendorCount * 300},
               {new: true}, (err, doc) => {
             if (err) {
                 console.log("Something wrong when updating data!");

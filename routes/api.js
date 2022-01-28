@@ -181,7 +181,18 @@ router.get("/cartv2/", checkAuth, function (req, res, next) {
     })
     .populate("user")
     .then(function (cart) {
-      res.send(cart);
+      newCart = []
+      newCartID = []
+
+      cart.map((e) => {
+        if(newCartID.includes(e.menu._id)){
+
+        }else{
+          newCartID.push(e.menu._id)
+          newCart.push(JSON.stringify(e.menu._id));
+        }
+      });
+      res.send(newCart);
     });
 });
 

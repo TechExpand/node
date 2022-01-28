@@ -364,11 +364,13 @@ router.delete("/cartv2/:menu/:user", function (req, res, next) {
             Cart.deleteMany({
               menu: menu,
               user: user,
+            }).then(function(value){
+              res.send(value)
             });
 
             cartClear(req.params.menu, req.params.user)
 
-            res.send(test);
+           
 
 
             // Cart.find({user: req.params.user}).populate('menu').then(function(carts){

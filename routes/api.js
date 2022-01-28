@@ -180,10 +180,9 @@ router.get("/cartv2/", checkAuth, function (req, res, next) {
       },
     })
     .populate("user")
-    .then(function (cart) {
+    .then(function (cart){
       newCart = []
       newCartID = []
-       
       cart.map((e) => {
         if(newCartID.includes(e.menu._id)){
           objIndex = newCart.findIndex((obj => obj.menu.id == e.menu._id));
@@ -196,6 +195,8 @@ router.get("/cartv2/", checkAuth, function (req, res, next) {
       res.send(newCart);
     });
 });
+
+
 
 //verify user cart for multiple vendor order
 router.post("/vendor-verify", function (req, res, next) {
@@ -345,6 +346,105 @@ router.delete("/cart/:id/:user", function (req, res, next) {
     .catch(next);
 });
 
+
+
+
+
+//delete user cart
+router.delete("/cartv2/:menu/:user", function (req, res, next) {
+   Cart.find({'menu': req.params.menu}).then(function(result){
+    result.map((e) => {
+              Cart.findByIdAndDelete({ _id: e._id })
+            });
+
+            Cart.find({user: req.params.user}).populate('menu').then(function(carts){
+              if(carts.length == 0){
+                Profile.findOneAndUpdate({user: req.params.user},
+                  {deliveryfee: 0 },
+                    {new: true}, (err, doc) => {
+                  if (err) {
+                      console.log("Something wrong when updating data!");
+                  }
+                 res.send(doc)
+              });
+              }else{
+                let newCartList = [];
+                carts.map((e) => {
+              newCartList.push(JSON.stringify(e.menu.vendor));
+            });
+            combinedNewCartList = [...newCartList] 
+            let vendorCount = [...new Set(combinedNewCartList)];
+            if (vendorCount.length == 1) {
+              Profile.findOneAndUpdate({user: req.params.user},
+                {deliveryfee: 0 },
+                  {new: true}, (err, doc) => {
+                if (err) {
+                    console.log("Something wrong when updating data!");
+                }
+               res.send(doc)
+            });
+            }else{
+              let coreectVendorCount = vendorCount.length - 1;
+              Profile.findOneAndUpdate({user: req.params.user},
+                {deliveryfee: coreectVendorCount * 300},
+                  {new: true}, (err, doc) => {
+                if (err) {
+                    console.log("Something wrong when updating data!");
+                }
+               res.send(doc)
+            });
+            }
+              }
+            
+            })
+   })
+   
+
+  // Cart.findByIdAndDelete({ _id: req.params.id })
+  //   .then(function (student) {
+  //       Cart.find({user: req.params.user}).populate('menu').then(function(carts){
+  //         if(carts.length == 0){
+  //           Profile.findOneAndUpdate({user: req.params.user},
+  //             {deliveryfee: 0 },
+  //               {new: true}, (err, doc) => {
+  //             if (err) {
+  //                 console.log("Something wrong when updating data!");
+  //             }
+  //            res.send(doc)
+  //         });
+  //         }else{
+  //           let newCartList = [];
+  //           carts.map((e) => {
+  //         newCartList.push(JSON.stringify(e.menu.vendor));
+  //       });
+  //       combinedNewCartList = [...newCartList] 
+  //       let vendorCount = [...new Set(combinedNewCartList)];
+  //       if (vendorCount.length == 1) {
+  //         Profile.findOneAndUpdate({user: req.params.user},
+  //           {deliveryfee: 0 },
+  //             {new: true}, (err, doc) => {
+  //           if (err) {
+  //               console.log("Something wrong when updating data!");
+  //           }
+  //          res.send(doc)
+  //       });
+  //       }else{
+  //         let coreectVendorCount = vendorCount.length - 1;
+  //         Profile.findOneAndUpdate({user: req.params.user},
+  //           {deliveryfee: coreectVendorCount * 300},
+  //             {new: true}, (err, doc) => {
+  //           if (err) {
+  //               console.log("Something wrong when updating data!");
+  //           }
+  //          res.send(doc)
+  //       });
+  //       }
+  //         }
+        
+  //       })
+  //   })
+  //   .catch(next);
+});
 
 
 

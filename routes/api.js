@@ -352,13 +352,21 @@ router.delete("/cart/:id/:user", function (req, res, next) {
 
 //delete user cart
 router.delete("/cartv2/:menu/:user", function (req, res, next) {
-   Cart.find({'menu': req.params.menu}).then(function(result){
-     let test;
-    result.map((e) => {
+   Cart.find({'menu': req.params.menu}).then( function(result){
+    //  let test;
+    // result.map((e) => {
 
-              Cart.findByIdAndDelete({_id: e._id})
-              test = e._id;
+    //           Cart.findByIdAndDelete({_id: e._id})
+    //           test = e._id;
+    //         });
+
+            const cartClear = async (menu, user) =>
+            Cart.deleteMany({
+              menu: menu,
+              user: user,
             });
+
+            cartClear(req.params.menu, req.params.user)
 
             res.send(test);
 

@@ -166,6 +166,25 @@ router.get("/cart/", checkAuth, function (req, res, next) {
     });
 });
 
+
+
+
+
+// get cart of the currently logged in user
+router.get("/cartv2/", checkAuth, function (req, res, next) {
+  Cart.find({ user: req.user })
+    .populate({
+      path: "menu",
+      populate: {
+        path: "vendor",
+      },
+    })
+    .populate("user")
+    .then(function (cart) {
+      res.send(cart);
+    });
+});
+
 //verify user cart for multiple vendor order
 router.post("/vendor-verify", function (req, res, next) {
   Cart.find({ user: req.body.user })

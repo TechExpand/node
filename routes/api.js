@@ -183,10 +183,11 @@ router.get("/cartv2/", checkAuth, function (req, res, next) {
     .then(function (cart) {
       newCart = []
       newCartID = []
-
+       
       cart.map((e) => {
         if(newCartID.includes(e.menu._id)){
-
+          objIndex = newCart.findIndex((obj => obj.menu.id == e.menu._id));
+          newCart[objIndex].name = "2"
         }else{
           newCartID.push(e.menu._id)
           newCart.push(e);

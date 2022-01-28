@@ -189,7 +189,7 @@ router.get("/cartv2/", checkAuth, function (req, res, next) {
 
         }else{
           newCartID.push(e.menu._id)
-          newCart.push(JSON.stringify(e));
+          newCart.push(e.toObject());
         }
       });
       res.send(newCart);

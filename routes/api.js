@@ -353,113 +353,57 @@ router.delete("/cart/:id/:user", function (req, res, next) {
 //delete user cart
 router.delete("/cartv2/:menu/:user", function (req, res, next) {
    Cart.find({'menu': req.params.menu}).then( function(result){
-    //  let test;
-    // result.map((e) => {
-
-    //           Cart.findByIdAndDelete({_id: e._id})
-    //           test = e._id;
-    //         });
-
             const cartClear = async (menu, user) =>
             Cart.deleteMany({
               menu: menu,
               user: user,
             }).then(function(value){
-              res.send(value)
+              Cart.find({user: req.params.user}).populate('menu').then(function(carts){
+                if(carts.length == 0){
+                  Profile.findOneAndUpdate({user: req.params.user},
+                    {deliveryfee: 0 },
+                      {new: true}, (err, doc) => {
+                    if (err) {
+                        console.log("Something wrong when updating data!");
+                    }
+                   res.send(doc)
+                });
+                }else{
+                  let newCartList = [];
+                  carts.map((e) => {
+                newCartList.push(JSON.stringify(e.menu.vendor));
+              });
+              combinedNewCartList = [...newCartList] 
+              let vendorCount = [...new Set(combinedNewCartList)];
+              if (vendorCount.length == 1) {
+                Profile.findOneAndUpdate({user: req.params.user},
+                  {deliveryfee: 0 },
+                    {new: true}, (err, doc) => {
+                  if (err) {
+                      console.log("Something wrong when updating data!");
+                  }
+                 res.send(doc)
+              });
+              }else{
+                let coreectVendorCount = vendorCount.length - 1;
+                Profile.findOneAndUpdate({user: req.params.user},
+                  {deliveryfee: coreectVendorCount * 300},
+                    {new: true}, (err, doc) => {
+                  if (err) {
+                      console.log("Something wrong when updating data!");
+                  }
+                 res.send(doc)
+              });
+              }
+                }
+              
+              })
             });
 
             cartClear(req.params.menu, req.params.user)
 
-           
-
-
-            // Cart.find({user: req.params.user}).populate('menu').then(function(carts){
-            //   if(carts.length == 0){
-            //     Profile.findOneAndUpdate({user: req.params.user},
-            //       {deliveryfee: 0 },
-            //         {new: true}, (err, doc) => {
-            //       if (err) {
-            //           console.log("Something wrong when updating data!");
-            //       }
-            //      res.send(doc)
-            //   });
-            //   }else{
-            //     let newCartList = [];
-            //     carts.map((e) => {
-            //   newCartList.push(JSON.stringify(e.menu.vendor));
-            // });
-            // combinedNewCartList = [...newCartList] 
-            // let vendorCount = [...new Set(combinedNewCartList)];
-            // if (vendorCount.length == 1) {
-            //   Profile.findOneAndUpdate({user: req.params.user},
-            //     {deliveryfee: 0 },
-            //       {new: true}, (err, doc) => {
-            //     if (err) {
-            //         console.log("Something wrong when updating data!");
-            //     }
-            //    res.send(doc)
-            // });
-            // }else{
-            //   let coreectVendorCount = vendorCount.length - 1;
-            //   Profile.findOneAndUpdate({user: req.params.user},
-            //     {deliveryfee: coreectVendorCount * 300},
-            //       {new: true}, (err, doc) => {
-            //     if (err) {
-            //         console.log("Something wrong when updating data!");
-            //     }
-            //    res.send(doc)
-            // });
-            // }
-            //   }
-            
-            // })
    })
-   
-
-  // Cart.findByIdAndDelete({ _id: req.params.id })
-  //   .then(function (student) {
-  //       Cart.find({user: req.params.user}).populate('menu').then(function(carts){
-  //         if(carts.length == 0){
-  //           Profile.findOneAndUpdate({user: req.params.user},
-  //             {deliveryfee: 0 },
-  //               {new: true}, (err, doc) => {
-  //             if (err) {
-  //                 console.log("Something wrong when updating data!");
-  //             }
-  //            res.send(doc)
-  //         });
-  //         }else{
-  //           let newCartList = [];
-  //           carts.map((e) => {
-  //         newCartList.push(JSON.stringify(e.menu.vendor));
-  //       });
-  //       combinedNewCartList = [...newCartList] 
-  //       let vendorCount = [...new Set(combinedNewCartList)];
-  //       if (vendorCount.length == 1) {
-  //         Profile.findOneAndUpdate({user: req.params.user},
-  //           {deliveryfee: 0 },
-  //             {new: true}, (err, doc) => {
-  //           if (err) {
-  //               console.log("Something wrong when updating data!");
-  //           }
-  //          res.send(doc)
-  //       });
-  //       }else{
-  //         let coreectVendorCount = vendorCount.length - 1;
-  //         Profile.findOneAndUpdate({user: req.params.user},
-  //           {deliveryfee: coreectVendorCount * 300},
-  //             {new: true}, (err, doc) => {
-  //           if (err) {
-  //               console.log("Something wrong when updating data!");
-  //           }
-  //          res.send(doc)
-  //       });
-  //       }
-  //         }
-        
-  //       })
-  //   })
-  //   .catch(next);
+  
 });
 
 

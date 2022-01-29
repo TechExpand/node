@@ -966,7 +966,7 @@ router.post("/orderv2/:reference", (req, res, next) => {
                   cart.map((e) => {
                     if(newCartID.includes(e.menu._id)){
                       objIndex = newCart.findIndex((obj => obj.menu.id == e.menu._id));
-                      newCart[objIndex].quantity = String(Number(newCart[objIndex].quantity) + Number("1"))
+                      newCart[objIndex].quantity = String(Number(newCart[objIndex].quantity) + Number(e.quantity))
                     }else{
                       newCartID.push(e.menu._id)
                       newCart.push(e);

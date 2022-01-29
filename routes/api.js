@@ -151,7 +151,7 @@ router.get("/cart/clear", function (req, res, next) {
     .catch(next);
 });
 
-// get cart of the currently logged in user
+// get cart of the currently logged in user version 1
 router.get("/cart/", checkAuth, function (req, res, next) {
   Cart.find({ user: req.user })
     .populate({
@@ -170,7 +170,7 @@ router.get("/cart/", checkAuth, function (req, res, next) {
 
 
 
-// get cart of the currently logged in user
+// get cart of the currently logged in user version 2
 router.get("/cartv2/", checkAuth, function (req, res, next) {
   Cart.find({ user: req.user })
     .populate({
@@ -298,7 +298,7 @@ router.post("/cart", function (req, res, next) {
     });
 });
 
-//delete user cart
+//delete user cart version 1
 router.delete("/cart/:id/:user", function (req, res, next) {
   Cart.findByIdAndDelete({ _id: req.params.id })
     .then(function (student) {
@@ -350,7 +350,7 @@ router.delete("/cart/:id/:user", function (req, res, next) {
 
 
 
-//delete user cart
+//delete user cart version 2
 router.delete("/cartv2/:menu/:user", function (req, res, next) {
    Cart.find({'menu': req.params.menu}).then( function(result){
             const cartClear = async (menu, user) =>

@@ -7,6 +7,10 @@ const VendorSchema = new Schema({
         type: String,
         required: [true, 'name field is required']
     },
+    containerfee: {
+        type: String,
+        required: [true, 'container fee field is required']
+    },
     start: {
         type: String,
         required: [true, 'start field is required']

@@ -93,7 +93,6 @@ router.post("/vendor", upload.single("image"), async (req, res, next) => {
       deliverytime: req.body.deliverytime,
       specialty: req.body.specialty,
       deliveryfee: req.body.deliveryfee,
-      containerfee: req.body.containerfee,
     })
       .then(function (vendor) {
         res.send(vendor);

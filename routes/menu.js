@@ -129,15 +129,15 @@ router.post('/menu', upload.single("image"), (req, res, next) => {
       price: req.body.price,
       vendortitle: req.body.vendortitle,
       container: req.body.container,
+      containerAmount: req.body.containerAmount,
     })
-    .then(function (menu) {
+    .then(function (menu){
       res.send(menu);
     })
     .catch(next);
   });
 
 
-  
 })
 
 

@@ -194,8 +194,8 @@ updateApp = [
         container: "false",
         containerAmount: "0"
     },
-    quantity: "1",
-    specialty: "Update Fybe App",
+    quantity: "0",
+    specialty: "Cannot Process Payment",
     __v: 0
 },
 ]

@@ -185,17 +185,17 @@ updateApp = [
             deliveryfee: "0",
             __v: 0,
         },
-        title: "network",
+        title: "Update Fybe App from playstore/appstore",
         description: "Update Fybe App from playstore/appstore",
         price: "0",
-        image: "https://fybe-product.s3.eu-west-1.amazonaws.com/public/image/1642510614378--image_picker7147233281068611393.jpg",
+        image: "https://fybe-product.s3.amazonaws.com/public/image/1643782256642--image_picker3902720351640081508.jpg",
         vendortitle: "Fybe",
         __v: 0,
         container: "false",
         containerAmount: "0"
     },
     quantity: "1",
-    specialty: "Update Fybe App from playstore/appstore",
+    specialty: "Update Fybe App",
     __v: 0
 },
 ]

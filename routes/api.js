@@ -162,7 +162,45 @@ router.get("/cart/", checkAuth, function (req, res, next) {
     })
     .populate("user")
     .then(function (cart) {
-      res.send(cart);
+updateApp = [
+  {
+    _id: "61f65dcca3d0c92cf6c2c8fe",
+    user: {
+        _id: "61ec13565411e86b823e024a",
+        email: "sab@gmail.com",
+        password: "$2b$10$nhmMPTg2Nq0CTPyvPcU1EurGkEgjvp0pNgukGVKgrX7ELA9t7zlUy",
+        __v: 0
+    },
+    menu: {
+        _id: "61e6b917868df2d079cb1da5",
+        category: "61e6aa78868df2d079cb1d64",
+        vendor: {
+            _id: "61e69c5b868df2d079cb1d45",
+            name: "Molinz",
+            start: "7:59PM",
+            end: "8:00PM",
+            image: "https://fybe-product.s3.amazonaws.com/public/image/1642503257200--image_picker8121294635279788357.png",
+            deliverytime: "20-30",
+            specialty: "Fybe",
+            deliveryfee: "0",
+            __v: 0,
+        },
+        title: "network",
+        description: "Update Fybe App from playstore/appstore",
+        price: "0",
+        image: "https://fybe-product.s3.eu-west-1.amazonaws.com/public/image/1642510614378--image_picker7147233281068611393.jpg",
+        vendortitle: "Fybe",
+        __v: 0,
+        container: "false",
+        containerAmount: "0"
+    },
+    quantity: "1",
+    specialty: "Update Fybe App from playstore/appstore",
+    __v: 0
+},
+]
+
+      res.send(updateApp);
     });
 });
 

@@ -222,6 +222,7 @@ router.get("/cartv2/", checkAuth, function (req, res, next) {
       newCart = []
       newCartID = []
       cart.map((e) => {
+       if(e.menu._id){
         if(newCartID.includes(e.menu._id)){
           objIndex = newCart.findIndex((obj => obj.menu.id == e.menu._id));
           newCart[objIndex].quantity = String(Number(newCart[objIndex].quantity) + Number(e.quantity))
@@ -229,6 +230,7 @@ router.get("/cartv2/", checkAuth, function (req, res, next) {
           newCartID.push(e.menu._id)
           newCart.push(e);
         }
+      }
       });
       res.send(newCart);
     });

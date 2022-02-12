@@ -32,29 +32,31 @@ router.post("/login", function (req, res, next) {
       if (!user) {
         res.status(400).send({ message: "invalid credentials" });
       }
-      bcrypt.compare(password, user.password).then(function (result) {
-        if (!result) {
-          res.status(400).send({ message: "invalid credentials" });
-        }
-        Profile.find({ user: user._id }).then(function (profile) {
-          let token = jwt.sign({ id: user._id }, TOKEN_SECRET, {
-            expiresIn: "3600000000s",
-          });
-          if(profile.length == 0){
-            res.status(400).send({message: "failed"})
-          }else{
-            console.log(profile)
-            res.send({
-              id: user._id,
-              token: token,
-              email: user.email,
-              fullname: profile[0].name,
-              deliveryfee: profile[0].deliveryfee,
-            });
+
+      else{
+        bcrypt.compare(password, user.password).then(function (result) {
+          if (!result) {
+            res.status(400).send({ message: "invalid credentials" });
           }
-          
+          Profile.find({ user: user._id }).then(function (profile) {
+            let token = jwt.sign({ id: user._id }, TOKEN_SECRET, {
+              expiresIn: "3600000000s",
+            });
+            if(profile.length == 0){
+              res.status(400).send({message: "failed"})
+            }else{
+              res.send({
+                id: user._id,
+                token: token,
+                email: user.email,
+                fullname: profile[0].name,
+                deliveryfee: profile[0].deliveryfee,
+              });
+            }
+            
+          });
         });
-      });
+      }
     })
     .catch(next);
 });
@@ -229,7 +231,6 @@ router.get("/cartv2/", checkAuth, function (req, res, next) {
       newCartID = []
       cart.map((e) => {
        if(e){
-         console.log(e)
         if(newCartID.includes(e.menu._id)){
           objIndex = newCart.findIndex((obj => obj.menu.id == e.menu._id));
           newCart[objIndex].quantity = String(Number(newCart[objIndex].quantity) + Number(e.quantity))

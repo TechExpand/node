@@ -40,7 +40,8 @@ router.post("/login", function (req, res, next) {
           let token = jwt.sign({ id: user._id }, TOKEN_SECRET, {
             expiresIn: "3600000000s",
           });
-          if(profile[0].has(name)){
+          if(profile){
+            console.log(profile)
             res.send({
               id: user._id,
               token: token,
@@ -227,7 +228,8 @@ router.get("/cartv2/", checkAuth, function (req, res, next) {
       newCart = []
       newCartID = []
       cart.map((e) => {
-       if(e.has(menu)){
+       if(e){
+         console.log(e)
         if(newCartID.includes(e.menu._id)){
           objIndex = newCart.findIndex((obj => obj.menu.id == e.menu._id));
           newCart[objIndex].quantity = String(Number(newCart[objIndex].quantity) + Number(e.quantity))

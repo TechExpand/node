@@ -40,13 +40,18 @@ router.post("/login", function (req, res, next) {
           let token = jwt.sign({ id: user._id }, TOKEN_SECRET, {
             expiresIn: "3600000000s",
           });
-          res.send({
-            id: user._id,
-            token: token,
-            email: user.email,
-            fullname: profile[0].name?profile[0].name:"",
-            deliveryfee: profile[0].deliveryfee,
-          });
+          if(profile[0].name){
+            res.send({
+              id: user._id,
+              token: token,
+              email: user.email,
+              fullname: profile[0].name,
+              deliveryfee: profile[0].deliveryfee,
+            });
+          }else{
+            res.status(400).send({message: "failed"})
+          }
+          
         });
       });
     })

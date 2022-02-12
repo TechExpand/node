@@ -41,6 +41,8 @@ router.post("/login", function (req, res, next) {
             expiresIn: "3600000000s",
           });
           if(profile.length == 0){
+            res.status(400).send({message: "failed"})
+          }else{
             console.log(profile)
             res.send({
               id: user._id,
@@ -49,8 +51,6 @@ router.post("/login", function (req, res, next) {
               fullname: profile[0].name,
               deliveryfee: profile[0].deliveryfee,
             });
-          }else{
-            res.status(400).send({message: "failed"})
           }
           
         });

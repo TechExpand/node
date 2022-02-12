@@ -44,7 +44,7 @@ router.post("/login", function (req, res, next) {
             id: user._id,
             token: token,
             email: user.email,
-            fullname: profile[0].name,
+            fullname: profile[0].name?profile[0].name:"",
             deliveryfee: profile[0].deliveryfee,
           });
         });

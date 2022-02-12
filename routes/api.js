@@ -34,28 +34,30 @@ router.post("/login", function (req, res, next) {
       }
 
       else{
-      //   bcrypt.compare(password, user.password).then(function (result) {
-      //     if (!result) {
-      //       res.status(400).send({ message: "invalid credentials" });
-      //     }
-      //     Profile.find({ user: user._id }).then(function (profile) {
-      //       let token = jwt.sign({ id: user._id }, TOKEN_SECRET, {
-      //         expiresIn: "3600000000s",
-      //       });
-      //       if(profile.length == 0){
-      //         res.status(400).send({message: "failed"})
-      //       }else{
-      //         res.send({
-      //           id: user._id,
-      //           token: token,
-      //           email: user.email,
-      //           fullname: profile[0].name,
-      //           deliveryfee: profile[0].deliveryfee,
-      //         });
-      //       }
+        bcrypt.compare(password, user.password).then(function (result) {
+          if (!result) {
+            res.status(400).send({ message: "invalid credentials" });
+          }
+         else{
+          Profile.find({ user: user._id }).then(function (profile) {
+            let token = jwt.sign({ id: user._id }, TOKEN_SECRET, {
+              expiresIn: "3600000000s",
+            });
+            if(profile.length == 0){
+              res.status(400).send({message: "failed"})
+            }else{
+              res.send({
+                id: user._id,
+                token: token,
+                email: user.email,
+                fullname: profile[0].name,
+                deliveryfee: profile[0].deliveryfee,
+              });
+            }
             
-      //     });
-      //   });
+          });
+         }
+        });
       }
     })
     .catch(next);

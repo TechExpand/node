@@ -40,7 +40,7 @@ router.post("/login", function (req, res, next) {
           let token = jwt.sign({ id: user._id }, TOKEN_SECRET, {
             expiresIn: "3600000000s",
           });
-          if(profile){
+          if(profile.length == 0){
             console.log(profile)
             res.send({
               id: user._id,

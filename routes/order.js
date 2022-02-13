@@ -986,7 +986,7 @@ router.post("/orderv2/:reference", (req, res, next) => {
                   const  getTotalAmount = () => {
                     for (let value of newCart) {
                       let totalValue = Number(value.menu.price) * Number(value.quantity)
-                      let totalAmount = totalAmount + totalValue +  Number(value.menu.containerAmount);
+                       totalAmount = totalAmount + totalValue +  Number(value.menu.containerAmount);
                     }
                   }
 

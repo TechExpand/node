@@ -981,6 +981,15 @@ router.post("/orderv2/:reference", (req, res, next) => {
                   
                   const newValue = [];
 
+                  const totalAmount = 0;
+
+                  const  getTotalAmount = () => {
+                    for (let value of newCart) {
+                      let totalValue = Number(value.menu.price) * Number(value.quantity)
+                      totalAmount = totalAmount + totalValue +  Number(value.menu.containerAmount);
+                    }
+                  }
+
                   const menuItem = () => {
                     let index = 0;
                     for (let value of newCart) {
@@ -1013,6 +1022,7 @@ router.post("/orderv2/:reference", (req, res, next) => {
                   };
 
                   menuItem();
+                  getTotalAmount();
 
                   let mailOptions = {
                     from: user[0].email,
@@ -1534,6 +1544,10 @@ a[x-apple-data-detectors='true'] {
       <p style="font-size: 14px; line-height: 140%;">USER PHONE NUMBER: ${
         req.body.phone
       }</p>
+      <p style="font-size: 14px; line-height: 140%;">FOOD TOTAL AMOUNT: ${
+        totalAmount
+      }</p>
+      
     </div>
   
         </td>

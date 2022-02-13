@@ -48,6 +48,9 @@ app.use('/api',require('./routes/menu'));
 app.use('/api',require('./routes/trends'));
 app.use('/api',require('./routes/recomend'));
 app.use('/api',require('./routes/slide'));
+app.use('/api',require('./routes/wallet'));
+
+
 app.use(function(err,req,res,next){
   res.status(422).send({error: err.message});
 });

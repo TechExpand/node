@@ -31,6 +31,10 @@ const VendorSchema = new Schema({
         type: String,
         required: [true, 'deliveryfee field is required']
     },
+    location: {
+        type: String,
+        required: [true, 'location field is required']
+    },
 });
 
 

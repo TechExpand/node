@@ -1,9 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const Coupon = require("../models/coupon");
+const axios = require("axios");
 const Wallet = require("../models/wallet");
 const User = require("../models/user");
 let multer = require("multer");
+const SECRET_KEY = "sk_test_27289215573221e30c39260423bfd64c6b8b7f1b";
 
 
 
@@ -40,7 +42,7 @@ router.get("/wallet", function (req, res, next) {
 
 //get the particular details of a wallet
 router.get("/wallet/:id", function (req, res, next) {
-    Wallet.findById({ _id: req.params.id })
+    Wallet.findOne({ user: req.params.id })
     .then(function (wallets) {
       res.send(wallets);
     })
@@ -92,7 +94,32 @@ router.delete("/wallet/:id", function (req, res, next) {
 });
 
 
-
+router.post("/fundwallet/:reference", (req, res, next) => {
+    axios
+      .get(`https://api.paystack.co/transaction/verify/${req.params.reference}`, {
+        headers: {
+          Authorization: `Bearer ${SECRET_KEY}`,
+        },
+      })
+      .then((response) => {
+        if (response.data.data.status === "success") {
+            Wallet.findOneAndUpdate({ user: req.body.user }, {
+                user: req.body.user,
+                email: req.body.email,
+                amount:req.body.amount,
+            }, {
+  new: true
+}).then(function (wallets) {
+                res.send(wallets);
+          });
+        } else {
+          res.send(response.data);
+        }
+      })
+      .catch((error) => {
+        res.send(error.response.data);
+      });
+  });
 
 
 

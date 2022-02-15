@@ -1167,8 +1167,8 @@ router.get("/transaction/clear", function (req, res, next) {
 //api to get all transaction of a user
 router.get("/transaction/:id", function (req, res, next) {
   Transaction.find({user: req.params.id})
-    .then(function (newtransaction) {
-      let newtransaction =   newtransaction.reverse();
+    .then(function (transaction) {
+      let newtransaction =   transaction.reverse();
       res.send(newtransaction);
     })
     .catch(next);

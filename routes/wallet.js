@@ -1054,7 +1054,7 @@ router.get("/credit/:id", function (req, res, next) {
     .then(function (credit) {
       console.log(credit)
       if(credit  == null){
-        res.send("empty");
+        res.send({message: "empty"});
       }else{
         res.send(credit);
       }

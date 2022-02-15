@@ -1089,7 +1089,7 @@ User.find({}).then(function(users){
         title: req.body.title,
       });
     })
-    res.send("done");
+    res.send("donee");
   }else{
 randomUsers = getRandom(users, Number(req.body.count))
       randomUsers.map((e)=>{

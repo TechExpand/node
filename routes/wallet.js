@@ -128,7 +128,7 @@ if(Number(usrs.amount) >= Number(req.body.amount)){
     .then(function (order) {
       Transaction.create({
         user: req.body.user,
-        message: "account has been debited with",
+        message: "Your account has been debited with",
         amount: req.body.amount,
         date: date.toString(),
         status: "debit",
@@ -1037,7 +1037,7 @@ router.post("/fundwallet/:reference", (req, res, next) => {
           let totalAmountWallet = Number(req.body.amount) + Number(result.amount)
           Transaction.create({
             user: req.body.user,
-            message: "account has been credited with",
+            message: "Your account has been credited with",
             amount: req.body.amount,
             date: date.toString(),
             status: "credit",

@@ -1053,12 +1053,11 @@ router.get("/credit/:id", function (req, res, next) {
   Credit.findOne({ user: req.params.id })
     .then(function (credit) {
       console.log(credit)
-      if(credit  == ""){
+      if(credit  == null){
         res.send("empty");
       }else{
         res.send(credit);
       }
-      
     })
     .catch(next);
 });

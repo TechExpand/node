@@ -1076,14 +1076,28 @@ function getRandom(arr, n) {
 // api to create a credit
 router.post("/credit", (req, res, next) => {
 User.find({}).then(function(users){
-      randomUsers = getRandom(users, Number(req.body.count))
-       res.send(randomUsers)
+  if(req.body.all == true){
+    users.map((e)=>{
+      Credit.create({
+        user: e._id,
+        message: req.body.message,
+        title: req.body.title,
+      });
+    })
+    res.send("done");
+  }else{
+randomUsers = getRandom(users, Number(req.body.count))
+      randomUsers.map((e)=>{
+        Credit.create({
+          user: e._id,
+          message: req.body.message,
+          title: req.body.title,
+        });
+      })
+      res.send("done");
+  }
+      
 }).catch(next);
-  // Credit.create(req.body)
-  //   .then(function (credit) {
-  //     res.send(credit);
-  //   })
-  //   .catch(next);
 });
 
 
@@ -1095,6 +1109,24 @@ router.delete("/credit/:id", function (req, res, next) {
     })
     .catch(next);
 });
+
+
+
+//clear all credit
+router.get("/credit/clear", function (req, res, next) {
+  Credit.find({})
+    .then(function (credit) {
+      credit.map((v) => {
+        return Credit.findByIdAndDelete({ _id: v._id }).then(function (
+          venue
+        ) {});
+      });
+      res.send("done");
+    })
+    .catch(next);
+});
+
+
 
 
 

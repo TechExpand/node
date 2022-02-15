@@ -1052,7 +1052,12 @@ router.post("/fundwallet/:reference", (req, res, next) => {
 router.get("/credit/:id", function (req, res, next) {
   Credit.findOne({ user: req.params.id })
     .then(function (credit) {
-      res.send(credit);
+      if(credit  == ""){
+        res.send("empty");
+      }else{
+        res.send(credit);
+      }
+      
     })
     .catch(next);
 });

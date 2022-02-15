@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const Coupon = require("../models/coupon");
+const Transaction = require("../models/transaction");
 const axios = require("axios");
 const Wallet = require("../models/wallet");
 const User = require("../models/user");
@@ -113,7 +113,9 @@ router.get("/wallet/:id", function (req, res, next) {
 
 router.post("/wallet_orderv2", (req, res, next) => {
  Wallet.findOne({user: req.body.user}).then(function(usrs){
+  var today = new Date();
 
+  var date = today.getDate()+'/'+(today.getMonth()+1)+'/'+today.getFullYear();
 
 if(Number(usrs.amount) >= Number(req.body.amount)){
   let newUserBalance = Number(usrs.amount) -  Number(req.body.amount)
@@ -124,6 +126,13 @@ if(Number(usrs.amount) >= Number(req.body.amount)){
   }).then(function(response){
     Order.create(req.body)
     .then(function (order) {
+      Transaction.create({
+        user: req.body.user,
+        message: "account has been debited with",
+        amount: req.body.amount,
+        date: date.toString(),
+        status: "debit",
+      })
       User.find({ _id: req.body.user }).then(function (user) {
         Cart.find({ user: req.body.user })
           .populate({
@@ -1023,7 +1032,16 @@ router.post("/fundwallet/:reference", (req, res, next) => {
     .then((response) => {
       if (response.data.data.status === "success") {
         Wallet.findOne({ user: req.body.user }).then(function (result) {
+          var today = new Date();
+          var date = today.getDate()+'/'+(today.getMonth()+1)+'/'+today.getFullYear();
           let totalAmountWallet = Number(req.body.amount) + Number(result.amount)
+          Transaction.create({
+            user: req.body.user,
+            message: "account has been credited with",
+            amount: req.body.amount,
+            date: date.toString(),
+            status: "credit",
+          })
           Wallet.findOneAndUpdate(
             { user: req.body.user },
             {
@@ -1132,12 +1150,12 @@ router.get("/credit/clear", function (req, res, next) {
 
 
 
-//clear all coupon
-router.get("/coupon/clear", function (req, res, next) {
-  Coupon.find({})
-    .then(function (coupons) {
-      coupons.map((v) => {
-        return Coupon.findByIdAndDelete({ _id: v._id }).then(function (
+//clear all transaction
+router.get("/transaction/clear", function (req, res, next) {
+  Transaction.find({})
+    .then(function (transaction) {
+      transaction.map((v) => {
+        return Transaction.findByIdAndDelete({ _id: v._id }).then(function (
           venue
         ) {});
       });
@@ -1146,20 +1164,20 @@ router.get("/coupon/clear", function (req, res, next) {
     .catch(next);
 });
 
-//api to get all Coupon
-router.get("/coupon", function (req, res, next) {
-  Coupon.find({})
-    .then(function (coupons) {
-      res.send(coupons);
+//api to get all transaction
+router.get("/transaction", function (req, res, next) {
+  Transaction.find({})
+    .then(function (transaction) {
+      res.send(transaction);
     })
     .catch(next);
 });
 
-//get the particular details of a Coupon
-router.get("/coupon/:id", function (req, res, next) {
-  Coupon.findById({ _id: req.params.id })
-    .then(function (coupons) {
-      res.send(coupons);
+//get the particular details of a transaction
+router.get("/transaction/:id", function (req, res, next) {
+  Transaction.findById({ _id: req.params.id })
+    .then(function (transaction) {
+      res.send(transaction);
     })
     .catch(next);
 });
@@ -1171,33 +1189,33 @@ router.get("/coupon/:id", function (req, res, next) {
  *
  **/
 
-// api to create a Coupon
-router.post("/coupon", (req, res, next) => {
-  Coupon.create(req.body)
-    .then(function (coupons) {
-      res.send(coupons);
+// api to create a Transaction
+router.post("/transaction", (req, res, next) => {
+  Transaction.create(req.body)
+    .then(function (transaction) {
+      res.send(transaction);
     })
     .catch(next);
 });
 
-// api to update the details of Coupon
-router.put("/coupon/:id", function (req, res, next) {
-  Coupon.findByIdAndUpdate({ _id: req.params.id }, req.body).then(function (
-    coupons
+// api to update the details of Transaction
+router.put("/rransaction/:id", function (req, res, next) {
+  Transaction.findByIdAndUpdate({ _id: req.params.id }, req.body).then(function (
+    transaction
   ) {
-    Coupon.findOne({ _id: req.params.id })
-      .then(function (coupons) {
-        res.send(coupons);
+    Transaction.findOne({ _id: req.params.id })
+      .then(function (transaction) {
+        res.send(transaction);
       })
       .catch(next);
   });
 });
 
-// api to delete a Coupon
-router.delete("/coupon/:id", function (req, res, next) {
-  Coupon.findByIdAndDelete({ _id: req.params.id })
-    .then(function (coupons) {
-      res.send(coupons);
+// api to delete a Transaction
+router.delete("/transaction/:id", function (req, res, next) {
+  Transaction.findByIdAndDelete({ _id: req.params.id })
+    .then(function (transaction) {
+      res.send(transaction);
     })
     .catch(next);
 });

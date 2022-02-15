@@ -7,6 +7,7 @@ const bcrypt = require("bcrypt");
 var jwt = require("jsonwebtoken");
 const axios = require("axios");
 const saltRounds = 10;
+const Wallet = require("../models/wallet");
 const checkAuth = require("../middleware/validate");
 const nodemailer = require("nodemailer");
 const { google } = require("googleapis");
@@ -87,6 +88,11 @@ router.post("/signup", function (req, res, next) {
             password: hashedPassword,
           })
             .then(function (createduser) {
+              Wallet.create({
+                email: email,
+                user: createduser._id,
+                amount: "0",
+              })
               Profile.create({
                 email: email,
                 name: fullname,

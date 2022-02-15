@@ -1081,27 +1081,24 @@ function getRandom(arr, n) {
 // api to create a credit
 router.post("/credit", (req, res, next) => {
 User.find({}).then(function(users){
-  if(req.body.all == true){
-    users.forEach( e =>{
-      Credit.create({
-        user: e._id,
-        message: req.body.message,
-        title: req.body.title,
-      });
-    })
-    res.send("donee");
-  }else{
 randomUsers = getRandom(users, Number(req.body.count))
       randomUsers.forEach( e =>{
+        Wallet.findOne({user: e._id}).then(function(wallet){
+          newBalance = Number(wallet.amount) + Number(req.body.amount)
+          Wallet.findOneAndUpdate({user: e._id}, {
+            amount: newBalance.toString(),
+            user: e._id,
+            email: e.email,
+          }).then(function(walletupdate){
         Credit.create({
           user: e._id,
           message: req.body.message,
           title: req.body.title,
         });
+          })
+        })
       })
       res.send("done");
-  }
-      
 }).catch(next);
 });
 

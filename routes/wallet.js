@@ -1076,7 +1076,7 @@ function getRandom(arr, n) {
 // api to create a credit
 router.post("/credit", (req, res, next) => {
 User.find({}).then(function(users){
-      randomUsers = getRandom(users, Number(res.body.count))
+      randomUsers = getRandom(users, Number(req.body.count))
        
 }).catch(next);
   // Credit.create(req.body)

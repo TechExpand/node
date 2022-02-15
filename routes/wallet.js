@@ -1082,7 +1082,7 @@ function getRandom(arr, n) {
 router.post("/credit", (req, res, next) => {
 User.find({}).then(function(users){
   if(req.body.all == true){
-    users.map((e)=>{
+    users.forEach( e =>{
       Credit.create({
         user: e._id,
         message: req.body.message,
@@ -1092,7 +1092,7 @@ User.find({}).then(function(users){
     res.send("donee");
   }else{
 randomUsers = getRandom(users, Number(req.body.count))
-      randomUsers.map((e)=>{
+      randomUsers.forEach( e =>{
         Credit.create({
           user: e._id,
           message: req.body.message,

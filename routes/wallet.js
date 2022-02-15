@@ -7,6 +7,7 @@ const User = require("../models/user");
 let multer = require("multer");
 const userOrder = require("../models/UserOrder");
 const Cart = require("../models/cart");
+const Credit = require("../models/Credit")
 const SECRET_KEY = "sk_test_27289215573221e30c39260423bfd64c6b8b7f1b";
 
 const { google } = require("googleapis");
@@ -1045,6 +1046,57 @@ router.post("/fundwallet/:reference", (req, res, next) => {
       res.send(error.response.data);
     });
 });
+
+
+//get the particular details of a credit
+router.get("/credit/:id", function (req, res, next) {
+  Credit.findOne({ user: req.params.id })
+    .then(function (credit) {
+      res.send(credit);
+    })
+    .catch(next);
+});
+
+
+function getRandom(arr, n) {
+  var result = new Array(n),
+      len = arr.length,
+      taken = new Array(len);
+  if (n > len)
+      throw new RangeError("getRandom: more elements taken than available");
+  while (n--) {
+      var x = Math.floor(Math.random() * len);
+      result[n] = arr[x in taken ? taken[x] : x];
+      taken[x] = --len in taken ? taken[len] : len;
+  }
+  return result;
+}
+
+
+// api to create a credit
+router.post("/credit", (req, res, next) => {
+User.find({}).then(function(users){
+      randomUsers = getRandom(users, 10)
+      res.send(randomUsers)
+}).catch(next);
+  // Credit.create(req.body)
+  //   .then(function (credit) {
+  //     res.send(credit);
+  //   })
+  //   .catch(next);
+});
+
+
+// api to delete a credit
+router.delete("/credit/:id", function (req, res, next) {
+  Credit.findByIdAndDelete({ _id: req.params.id })
+    .then(function (credit) {
+      res.send(credit);
+    })
+    .catch(next);
+});
+
+
 
 //clear all coupon
 router.get("/coupon/clear", function (req, res, next) {

@@ -92,26 +92,27 @@ router.post("/signup", function (req, res, next) {
                 email: email,
                 user: createduser._id,
                 amount: "0",
-              })
-              Profile.create({
-                email: email,
-                name: fullname,
-                user: createduser._id,
-                deliveryfee: 0,
-              })
-                .then(function (profile) {
-                  let token = jwt.sign({ id: createduser._id }, TOKEN_SECRET, {
-                    expiresIn: "3600000000s",
-                  });
-                  res.send({
-                    id: createduser._doc._id,
-                    token: token,
-                    fullname: fullname,
-                    email: createduser._doc.email,
-                    deliveryfee: 0,
-                  });
+              }).then(function(wallet){
+                Profile.create({
+                  email: email,
+                  name: fullname,
+                  user: createduser._id,
+                  deliveryfee: 0,
                 })
-                .catch(next);
+                  .then(function (profile) {
+                    let token = jwt.sign({ id: createduser._id }, TOKEN_SECRET, {
+                      expiresIn: "3600000000s",
+                    });
+                    res.send({
+                      id: createduser._doc._id,
+                      token: token,
+                      fullname: fullname,
+                      email: createduser._doc.email,
+                      deliveryfee: 0,
+                    });
+                  })
+                  .catch(next);
+              }) .catch(next);
             })
             .catch(next);
         });

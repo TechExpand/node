@@ -109,6 +109,7 @@ router.post("/vendor", upload.single("image"), async (req, res, next) => {
       start: req.body.start,
       end: req.body.end,
       image: data.Location,
+      location: req.body.location,
       deliverytime: req.body.deliverytime,
       specialty: req.body.specialty,
       deliveryfee: req.body.deliveryfee,

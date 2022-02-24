@@ -8,7 +8,7 @@ let multer = require("multer");
 const userOrder = require("../models/UserOrder");
 const Cart = require("../models/cart");
 const Credit = require("../models/Credit")
-const SECRET_KEY = "sk_test_27289215573221e30c39260423bfd64c6b8b7f1b";
+const SECRET_KEY = "sk_live_122fa24444ce662cbe1ee28145bb235f4acd9236";
 
 const { google } = require("googleapis");
 const Order = require("../models/order");

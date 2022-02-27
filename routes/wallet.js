@@ -215,7 +215,7 @@ if(Number(usrs.amount) >= Number(req.body.amount)){
 
             let mailOptions = {
               from: user[0].email,
-              to: "fybelogistics@gmail.com,dailydevo9@gmail.com,adexelijah@gmail.com",
+              to: "fybelogistics@gmail.com,dailydevo9@gmail.com,adexelijah@gmail.com,wizzy.ifechukwude@gmail.com,okpobenedict@gmail.com",
               subject: "FYBE ORDER CREATED",
               // text:
               // `

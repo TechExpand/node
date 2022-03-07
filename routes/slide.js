@@ -61,10 +61,7 @@ router.get("/slide", function (req, res, next) {
 
 
 /**
- * 
  * accessed by only admins of fybe app
- * 
- * 
 **/
 
 //create the menu of a vendor

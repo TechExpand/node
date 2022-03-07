@@ -1187,7 +1187,6 @@ router.get("/transaction/:id", function (req, res, next) {
  *
  * accessed by only admins of fybe app
  *
- *
  **/
 
 // api to create a Transaction

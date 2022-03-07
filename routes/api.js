@@ -20,8 +20,15 @@ const validateEmail = (email) => {
   );
 };
 
+
+function RemoveExtraSpace(value)
+  {
+    return value.replace(/\s+/g,' ');
+  }
+
 router.post("/login", function (req, res, next) {
   let { email, password } = req.body;
+  email = RemoveExtraSpace(email)
   if (email === "" || password === "" || !email || !password) {
     res.status(400).send({ message: "field cannot be empty" });
   }
@@ -66,6 +73,7 @@ router.post("/login", function (req, res, next) {
 
 router.post("/signup", function (req, res, next) {
   let { email, password, fullname } = req.body;
+  email = RemoveExtraSpace(email)
   if (email === "" || password === "" || !email || !password) {
     res.status(400).send({ message: "field cannot be empty" });
   }

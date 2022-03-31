@@ -77,56 +77,58 @@ router.post("/signup", function (req, res, next) {
   if (email === "" || password === "" || !email || !password) {
     res.status(400).send({ message: "field cannot be empty" });
   }
-  if (password.length <= 6) {
+  else if (password.length <= 6) {
     res
       .status(400)
       .send({ message: "password must be greater than 6 characters" });
   }
-  if (!validateEmail(email)) {
+  else if (!validateEmail(email)) {
     res.status(400).send({ message: "enter a valid email" });
   }
+ else{
   User.findOne({ email: email })
-    .then(function (user) {
-      if (user) {
-        res.status(400).send({ message: "user already exist" });
-      } else {
-        bcrypt.hash(password, saltRounds, function (err, hashedPassword) {
-          User.create({
-            email: email,
-            password: hashedPassword,
-          })
-            .then(function (createduser) {
-              Wallet.create({
+  .then(function (user) {
+    if (user) {
+      res.status(400).send({ message: "user already exist" });
+    } else {
+      bcrypt.hash(password, saltRounds, function (err, hashedPassword) {
+        User.create({
+          email: email,
+          password: hashedPassword,
+        })
+          .then(function (createduser) {
+            Wallet.create({
+              email: email,
+              user: createduser._id,
+              amount: "0",
+            }).then(function(wallet){
+              Profile.create({
                 email: email,
+                name: fullname,
                 user: createduser._id,
-                amount: "0",
-              }).then(function(wallet){
-                Profile.create({
-                  email: email,
-                  name: fullname,
-                  user: createduser._id,
-                  deliveryfee: 0,
+                deliveryfee: 0,
+              })
+                .then(function (profile) {
+                  let token = jwt.sign({ id: createduser._id }, TOKEN_SECRET, {
+                    expiresIn: "3600000000s",
+                  });
+                  res.send({
+                    id: createduser._doc._id,
+                    token: token,
+                    fullname: fullname,
+                    email: createduser._doc.email,
+                    deliveryfee: 0,
+                  });
                 })
-                  .then(function (profile) {
-                    let token = jwt.sign({ id: createduser._id }, TOKEN_SECRET, {
-                      expiresIn: "3600000000s",
-                    });
-                    res.send({
-                      id: createduser._doc._id,
-                      token: token,
-                      fullname: fullname,
-                      email: createduser._doc.email,
-                      deliveryfee: 0,
-                    });
-                  })
-                  .catch(next);
-              }) .catch(next);
-            })
-            .catch(next);
-        });
-      }
-    })
-    .catch(next);
+                .catch(next);
+            }) .catch(next);
+          })
+          .catch(next);
+      });
+    }
+  })
+  .catch(next);
+ }
 });
 
 //get get delivery amount
